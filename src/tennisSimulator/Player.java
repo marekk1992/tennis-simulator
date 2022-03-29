@@ -4,7 +4,7 @@ public class Player implements Comparable<Player> {
 
     private static final String MEN_ORGANIZATION = "ATP";
     private static final String WOMEN_ORGANIZATION = "WTA";
-    private static final String MAN = "men";
+    private static final String MAN = "man";
 
     private final String name;
     private final String gender;
