@@ -2,9 +2,9 @@ package tennisSimulator;
 
 public class Player implements Comparable<Player> {
 
-    public static final String MEN_ORGANIZATION = "ATP";
-    public static final String WOMEN_ORGANIZATION = "WTP";
-    public static final String MEN = "men";
+    private static final String MEN_ORGANIZATION = "ATP";
+    private static final String WOMEN_ORGANIZATION = "WTA";
+    private static final String MAN = "men";
 
     private final String name;
     private final String gender;
@@ -19,11 +19,7 @@ public class Player implements Comparable<Player> {
         this.rating = rating;
         String [] splitName = name.split(" ");
         abbreviatedName = splitName[1].substring(0, 3).toUpperCase();
-        if (gender.equals(MEN)) {
-            organization = MEN_ORGANIZATION;
-        } else {
-            organization = WOMEN_ORGANIZATION;
-        }
+        organization = gender.equalsIgnoreCase(MAN) ? MEN_ORGANIZATION : WOMEN_ORGANIZATION;
     }
 
     public String getName() {

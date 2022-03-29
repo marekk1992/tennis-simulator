@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GameDatabase {
+public class PlayersDatabase {
 
     private List<Player> players;
 
-    public GameDatabase() {
+    public PlayersDatabase() {
         players = new ArrayList<>();
     }
 
@@ -29,7 +29,7 @@ public class GameDatabase {
         } else {
             Collections.sort(players);
             for (Player player : players) {
-                player.toString();
+                System.out.println(player);
             }
         }
     }
