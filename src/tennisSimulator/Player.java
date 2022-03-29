@@ -2,36 +2,57 @@ package tennisSimulator;
 
 public class Player implements Comparable<Player> {
 
-    private String name;
-    private String gender;
-    private int atpRating;
+    private static final String MEN_ORGANIZATION = "ATP";
+    private static final String WOMEN_ORGANIZATION = "WTA";
+    private static final String MAN = "man";
 
-    public Player(String name, String gender, int atpRating) {
+    private final String name;
+    private final String gender;
+    private final String abbreviatedName;
+    private final int rating;
+    private final String organization;
+    private boolean isServing = false;
+
+    public Player(String name, String gender, int rating) {
         this.name = name;
         this.gender = gender;
-        this.atpRating = atpRating;
+        this.rating = rating;
+        String [] splitName = name.split(" ");
+        abbreviatedName = splitName[1].substring(0, 3).toUpperCase();
+        organization = gender.equalsIgnoreCase(MAN) ? MEN_ORGANIZATION : WOMEN_ORGANIZATION;
     }
 
     public String getName() {
         return name;
     }
 
+    public int getRating() {
+        return rating;
+    }
+
     public String getGender() {
         return gender;
     }
 
-    public int getAtpRating() {
-        return atpRating;
+    @Override
+    public int compareTo(Player player) {
+        return Integer.compare(rating, player.rating);
+    }
+
+    public String getAbbreviatedName() {
+        return abbreviatedName;
+    }
+
+    public boolean isServing() {
+        return isServing;
+    }
+
+    public void setServing(boolean serving) {
+        isServing = serving;
     }
 
     @Override
-    public int compareTo(Player player) {
-        if (atpRating > player.atpRating) {
-            return 1;
-        } else if (atpRating < player.atpRating) {
-            return -1;
-        } else {
-            return 0;
-        }
+    public String toString() {
+        return name + " (" + organization + " rating - " + rating + ")";
     }
 }
