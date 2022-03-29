@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public static MatchSimulator matchSimulator = new MatchSimulator();
     public static PlayersDatabase playersDatabase = new PlayersDatabase();
     public static Scanner scanner = new Scanner(System.in);
 
@@ -12,7 +11,7 @@ public class Menu {
         boolean quit = false;
         System.out.println("WELCOME TO TENNIS SIMULATOR\n");
         printMenu();
-        while(!quit) {
+        while (!quit) {
             int choice = scanner.nextInt();
             scanner.nextLine();
             switch (choice) {
@@ -20,15 +19,12 @@ public class Menu {
                     printMenu();
                     break;
                 case 1:
-                    simulateMatch();
+                    playersDatabase.print();
                     break;
                 case 2:
-                    playersDatabase.printDatabase();
-                    break;
-                case 3:
                     addPlayerToDatabase();
                     break;
-                case 4:
+                case 3:
                     quit = true;
                     System.out.println("Exiting simulator...");
                     break;
@@ -39,10 +35,9 @@ public class Menu {
     private void printMenu() {
         System.out.println("Select:\n" +
                 "0 - show options;\n" +
-                "1 - simulate match;\n" +
-                "2 - show players database;\n" +
-                "3 - add player to database;\n" +
-                "4 - exit simulator;");
+                "1 - show players database;\n" +
+                "2 - add player to database;\n" +
+                "3 - exit simulator;");
     }
 
     private void addPlayerToDatabase() {
@@ -53,21 +48,18 @@ public class Menu {
             return;
         }
 
-        System.out.print("Enter a gender (men/women): ");
+        System.out.print("Enter a gender (man/woman): ");
         String gender = scanner.nextLine().toLowerCase();
 
-        checkGender(gender);
+        defineOrganization(gender);
         int rating = scanner.nextInt();
 
         playersDatabase.addPlayer(new Player(name, gender, rating));
     }
 
-    private void simulateMatch() {
-    }
-
-    private void checkGender(String gender) {
-        String men = "men";
-        if (gender.equals(men)) {
+    private void defineOrganization(String gender) {
+        String man = "man";
+        if (gender.equals(man)) {
             System.out.print("Enter an ATP rating: ");
         } else {
             System.out.print("Enter a WTA rating: ");
