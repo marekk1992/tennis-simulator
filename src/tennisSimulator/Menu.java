@@ -4,10 +4,10 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public static PlayersDatabase playersDatabase = new PlayersDatabase();
-    public static Scanner scanner = new Scanner(System.in);
+    private static PlayersDatabase playersDatabase = new PlayersDatabase();
+    private static Scanner scanner = new Scanner(System.in);
 
-    public void runTennisSimulator() {
+    public void openTennisSimulatorMenu() {
         boolean quit = false;
         System.out.println("WELCOME TO TENNIS SIMULATOR\n");
         printMenu();
@@ -51,18 +51,22 @@ public class Menu {
         System.out.print("Enter a gender (man/woman): ");
         String gender = scanner.nextLine().toLowerCase();
 
-        defineOrganization(gender);
-        int rating = scanner.nextInt();
-
-        playersDatabase.addPlayer(new Player(name, gender, rating));
+        if (defineOrganization(gender)) {
+            int rating = scanner.nextInt();
+            playersDatabase.addPlayer(new Player(name, gender, rating));
+        }
     }
 
-    private void defineOrganization(String gender) {
-        String man = "man";
-        if (gender.equals(man)) {
+    private boolean defineOrganization(String gender) {
+        if (gender.equalsIgnoreCase(Player.MAN)) {
             System.out.print("Enter an ATP rating: ");
-        } else {
+            return true;
+        } else if (gender.equalsIgnoreCase(Player.WOMAN)){
             System.out.print("Enter a WTA rating: ");
+            return true;
+        } else {
+            System.out.println("Addition failed. Please enter a valid gender.");
+            return false;
         }
     }
 }
