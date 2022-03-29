@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PlayersDatabase {
+public class GameDatabase {
 
     private List<Player> players;
 
-    public PlayersDatabase() {
+    public GameDatabase() {
         players = new ArrayList<>();
     }
 
@@ -23,28 +23,14 @@ public class PlayersDatabase {
         }
     }
 
-    public void printDatabase() {
+    public void print() {
         if (players.isEmpty()) {
             System.out.println("Players database is empty.");
         } else {
             Collections.sort(players);
-            int index = 1;
             for (Player player : players) {
-                String men = "men";
-                String rating = "";
-                if (player.getGender().equals(men)) {
-                    rating += "ATP";
-                } else {
-                    rating += "WTA";
-                }
-                System.out.println(index + ". " + player.getName()
-                        + " (" + rating + " - " + player.getRating() + ")");
-                index++;
+                player.toString();
             }
         }
-    }
-
-    public void findPlayer(String name) {
-
     }
 }

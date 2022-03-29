@@ -1,13 +1,16 @@
 package tennisSimulator;
 
-import java.util.Locale;
-
 public class Player implements Comparable<Player> {
+
+    public static final String MEN_ORGANIZATION = "ATP";
+    public static final String WOMEN_ORGANIZATION = "WTP";
+    public static final String MEN = "men";
 
     private final String name;
     private final String gender;
     private final String abbreviatedName;
     private final int rating;
+    private final String organization;
     private boolean isServing = false;
 
     public Player(String name, String gender, int rating) {
@@ -15,7 +18,12 @@ public class Player implements Comparable<Player> {
         this.gender = gender;
         this.rating = rating;
         String [] splitName = name.split(" ");
-        abbreviatedName = splitName[1].substring(0, 3).toUpperCase(Locale.ROOT);
+        abbreviatedName = splitName[1].substring(0, 3).toUpperCase();
+        if (gender.equals(MEN)) {
+            organization = MEN_ORGANIZATION;
+        } else {
+            organization = WOMEN_ORGANIZATION;
+        }
     }
 
     public String getName() {
@@ -45,5 +53,10 @@ public class Player implements Comparable<Player> {
 
     public void setServing(boolean serving) {
         isServing = serving;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + organization + " rating - " + rating + ")";
     }
 }
