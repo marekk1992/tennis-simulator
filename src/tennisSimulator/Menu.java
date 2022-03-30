@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class Menu {
 
-    private static PlayersDatabase playersDatabase = new PlayersDatabase();
-    private static Scanner scanner = new Scanner(System.in);
+    private static final PlayersDatabase playersDatabase = new PlayersDatabase();
+    private static final Scanner scanner = new Scanner(System.in);
 
     public void openTennisSimulatorMenu() {
         boolean quit = false;
@@ -27,6 +27,10 @@ public class Menu {
                 case 3:
                     quit = true;
                     System.out.println("Exiting simulator...");
+                    break;
+                default:
+                    System.out.println("Incorrect input. Please choose one of available options.\n");
+                    printMenu();
                     break;
             }
         }
@@ -51,13 +55,13 @@ public class Menu {
         System.out.print("Enter a gender (man/woman): ");
         String gender = scanner.nextLine().toLowerCase();
 
-        if (defineOrganization(gender)) {
+        if (isValidGender(gender)) {
             int rating = scanner.nextInt();
             playersDatabase.addPlayer(new Player(name, gender, rating));
         }
     }
 
-    private boolean defineOrganization(String gender) {
+    private boolean isValidGender(String gender) {
         if (gender.equalsIgnoreCase(Player.MAN)) {
             System.out.print("Enter an ATP rating: ");
             return true;
