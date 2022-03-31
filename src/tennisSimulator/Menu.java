@@ -45,32 +45,50 @@ public class Menu {
     }
 
     private void addPlayerToDatabase() {
-        System.out.print("Enter a full name: ");
+        System.out.print("Enter a full player name: ");
         String name = scanner.nextLine();
-        if (!name.contains(" ")) {
-            System.out.println("Addition failed. Please enter full player name");
+
+        if (!isFullName(name)) {
+            System.out.println("Addition failed. Please enter full player name.");
             return;
         }
 
         System.out.print("Enter a gender (man/woman): ");
         String gender = scanner.nextLine().toLowerCase();
 
-        if (isValidGender(gender)) {
-            int rating = scanner.nextInt();
-            playersDatabase.addPlayer(new Player(name, gender, rating));
+        if (!isValidGender(gender)) {
+            System.out.println("Addition failed. Please enter a valid gender.");
+            return;
         }
+
+        resolveGender(gender);
+        int rating = scanner.nextInt();
+        if (!isValidRating(rating)) {
+            System.out.println("Addition failed. Please enter a valid rating.");
+            return;
+        }
+
+        playersDatabase.addPlayer(new Player(name, gender, rating));
+
     }
 
     private boolean isValidGender(String gender) {
+        return gender.equalsIgnoreCase(Player.MAN) || gender.equalsIgnoreCase(Player.WOMAN);
+    }
+
+    private boolean isFullName(String name) {
+        return name.contains(" ");
+    }
+
+    private boolean isValidRating(int rating) {
+        return rating >= 0;
+    }
+
+    private void resolveGender(String gender) {
         if (gender.equalsIgnoreCase(Player.MAN)) {
-            System.out.print("Enter an ATP rating: ");
-            return true;
-        } else if (gender.equalsIgnoreCase(Player.WOMAN)){
             System.out.print("Enter a WTA rating: ");
-            return true;
         } else {
-            System.out.println("Addition failed. Please enter a valid gender.");
-            return false;
+            System.out.print("Enter a WTA rating: ");
         }
     }
 }
