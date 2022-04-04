@@ -45,31 +45,26 @@ public class Menu {
     }
 
     private void addPlayerToDatabase() {
-        System.out.print("Enter a full player name: ");
-        String name = scanner.nextLine();
-
+        String name = promptUserForName();
         if (!isFullName(name)) {
             System.out.println("Addition failed. Please enter full player name.");
             return;
         }
 
-        System.out.print("Enter a gender (man/woman): ");
-        String gender = scanner.nextLine().toLowerCase();
-
+        String gender = promptUserForGender();
         if (!isValidGender(gender)) {
             System.out.println("Addition failed. Please enter a valid gender.");
             return;
         }
 
-        resolveGender(gender);
-        int rating = scanner.nextInt();
+        String organization = resolveOrganization(gender);
+        int rating = promptUserForRating(organization);
         if (!isValidRating(rating)) {
             System.out.println("Addition failed. Please enter a valid rating.");
             return;
         }
 
         playersDatabase.addPlayer(new Player(name, gender, rating));
-
     }
 
     private boolean isValidGender(String gender) {
@@ -81,14 +76,33 @@ public class Menu {
     }
 
     private boolean isValidRating(int rating) {
-        return rating >= 0;
+        return rating > 0;
     }
 
-    private void resolveGender(String gender) {
+    private String resolveOrganization(String gender) {
         if (gender.equalsIgnoreCase(Player.MAN)) {
-            System.out.print("Enter a WTA rating: ");
+            return "ATP";
+        } else {
+            return "WTA";
+        }
+    }
+
+    private int promptUserForRating(String organization) {
+        if (organization.equalsIgnoreCase(Player.MEN_ORGANIZATION)) {
+            System.out.print("Enter a ATP rating: ");
         } else {
             System.out.print("Enter a WTA rating: ");
         }
+        return scanner.nextInt();
+    }
+
+    private String promptUserForName() {
+        System.out.print("Enter a full player name: ");
+        return scanner.nextLine();
+    }
+
+    private String promptUserForGender() {
+        System.out.print("Enter a gender (man/woman): ");
+        return scanner.nextLine();
     }
 }

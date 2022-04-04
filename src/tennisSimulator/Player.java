@@ -2,8 +2,8 @@ package tennisSimulator;
 
 public class Player implements Comparable<Player> {
 
-    private static final String MEN_ORGANIZATION = "ATP";
-    private static final String WOMEN_ORGANIZATION = "WTA";
+    static final String MEN_ORGANIZATION = "ATP";
+    static final String WOMEN_ORGANIZATION = "WTA";
     static final String MAN = "man";
     static final String WOMAN = "woman";
 
