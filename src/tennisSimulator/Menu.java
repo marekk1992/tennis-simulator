@@ -81,9 +81,9 @@ public class Menu {
 
     private String resolveOrganization(String gender) {
         if (gender.equalsIgnoreCase(Player.MAN)) {
-            return "ATP";
+            return Player.MEN_ORGANIZATION;
         } else {
-            return "WTA";
+            return Player.WOMEN_ORGANIZATION;
         }
     }
 
