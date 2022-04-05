@@ -46,6 +46,7 @@ public class Player implements Comparable<Player> {
 
     public void setServing(boolean serving) {
         isServing = serving;
+        System.out.println(name + " is serving");
     }
 
     @Override
