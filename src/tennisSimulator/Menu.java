@@ -68,7 +68,8 @@ public class Menu {
     }
 
     private boolean isValidGender(String gender) {
-        return gender.equalsIgnoreCase(Player.MAN) || gender.equalsIgnoreCase(Player.WOMAN);
+        return gender.equalsIgnoreCase(String.valueOf(TennisCommunity.MAN))
+                || gender.equalsIgnoreCase(String.valueOf(TennisCommunity.WOMAN));
     }
 
     private boolean isFullName(String name) {
@@ -80,15 +81,15 @@ public class Menu {
     }
 
     private String resolveOrganization(String gender) {
-        if (gender.equalsIgnoreCase(Player.MAN)) {
-            return Player.MEN_ORGANIZATION;
+        if (gender.equalsIgnoreCase(String.valueOf(TennisCommunity.MAN))) {
+            return String.valueOf(TennisCommunity.ATP);
         } else {
-            return Player.WOMEN_ORGANIZATION;
+            return String.valueOf(TennisCommunity.WTA);
         }
     }
 
     private int promptUserForRating(String organization) {
-        if (organization.equalsIgnoreCase(Player.MEN_ORGANIZATION)) {
+        if (organization.equalsIgnoreCase(String.valueOf(TennisCommunity.ATP))) {
             System.out.print("Enter a ATP rating: ");
         } else {
             System.out.print("Enter a WTA rating: ");

@@ -2,23 +2,31 @@ package tennisSimulator;
 
 public class MatchSimulator {
 
-    public void firstServe(Player firstPlayer, Player secondPLayer)  {
+    private Player playerOne;
+    private Player playerTwo;
+
+    public MatchSimulator(MatchParticipants matchParticipants) {
+        playerOne = matchParticipants.getParticipants().get(0);
+        playerTwo = matchParticipants.getParticipants().get(1);
+    }
+
+    public void setFirstServer() {
         if (Math.random() >= 0.5) {
-            firstPlayer.setServing(true);
-            System.out.println(firstPlayer.getName() + " is serving");
+            playerOne.setServing(true);
+            System.out.println(playerOne.getName() + " is serving");
         } else {
-            secondPLayer.setServing(true);
-            System.out.println(secondPLayer.getName() + " is serving");
+            playerTwo.setServing(true);
+            System.out.println(playerTwo.getName() + " is serving");
         }
     }
 
-    public void changeServe(Player firstPlayer, Player secondPlayer) {
-        if (!firstPlayer.isServing()) {
-            firstPlayer.setServing(true);
-            secondPlayer.setServing(false);
+    public void changeServer(MatchParticipants matchParticipants) {
+        if (!playerOne.isServing()) {
+            playerOne.setServing(true);
+            playerTwo.setServing(false);
         } else {
-            firstPlayer.setServing(false);
-            secondPlayer.setServing(true);
+            playerOne.setServing(false);
+            playerTwo.setServing(true);
         }
     }
 }
