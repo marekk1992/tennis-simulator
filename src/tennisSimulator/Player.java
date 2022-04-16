@@ -5,18 +5,18 @@ public class Player implements Comparable<Player> {
     private final String name;
     private final String abbreviatedName;
     private final int rating;
-    private final String organization;
+    private final Organization organization;
     private boolean isServing = false;
     private int gamesWon = 0;
     private int setsWon = 0;
+    private Object handsWon = 0;
 
-    public Player(String name, String gender, int rating) {
+    public Player(String name, Gender gender, int rating) {
         this.name = name;
         this.rating = rating;
         String[] splitName = name.split(" ");
         abbreviatedName = splitName[1].substring(0, 3).toUpperCase();
-        organization = gender.equalsIgnoreCase(Gender.MAN.toString())
-                ? Organization.ATP.toString() : Organization.WTA.toString();
+        organization = gender.equals(Gender.MAN) ? Organization.ATP : Organization.WTA;
     }
 
     public String getName() {
@@ -54,5 +54,9 @@ public class Player implements Comparable<Player> {
 
     public int getSetsWon() {
         return setsWon;
+    }
+
+    public Object getHandsWon() {
+        return handsWon;
     }
 }

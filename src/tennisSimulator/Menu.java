@@ -4,9 +4,9 @@ import java.util.Scanner;
 
 public class Menu {
 
-    private static final PlayersDatabase playersDatabase = new PlayersDatabase();
+    private final PlayersDatabase playersDatabase = PlayersDatabase.getInstance();
     private static final Scanner scanner = new Scanner(System.in);
-    private static MatchSimulator matchSimulator;
+    private MatchSimulator matchSimulator;
 
     public void openTennisSimulatorMenu() {
         boolean quit = false;
@@ -26,7 +26,7 @@ public class Menu {
                     addPlayerToDatabase();
                     break;
                 case 3:
-                    openMatchMenu();
+                    simulateMatch();
                     break;
                 case 4:
                     quit = true;
@@ -45,7 +45,7 @@ public class Menu {
                 "0 - show options;\n" +
                 "1 - show players database;\n" +
                 "2 - add player to database;\n" +
-                "3 - open match menu;\n" +
+                "3 - simulate match;\n" +
                 "4 - exit simulator;");
     }
 
@@ -56,13 +56,14 @@ public class Menu {
             return;
         }
 
-        String gender = promptUserForGender();
-        if (!isValidGender(gender)) {
+        String playerGender = promptUserForGender();
+        if (!isValidGender(playerGender)) {
             System.out.println("Addition failed. Please enter a valid gender.");
             return;
         }
+        Gender gender = resolveGender(playerGender);
 
-        String organization = resolveOrganization(gender);
+        Organization organization = resolveOrganization(gender);
         int rating = promptUserForRating(organization);
         if (!isValidRating(rating)) {
             System.out.println("Addition failed. Please enter a valid rating.");
@@ -85,20 +86,16 @@ public class Menu {
         return rating > 0;
     }
 
-    private String resolveOrganization(String gender) {
-        if (gender.equalsIgnoreCase(Gender.MAN.toString())) {
-            return String.valueOf(Organization.ATP.toString());
-        } else {
-            return String.valueOf(Organization.WTA.toString());
-        }
+    private Organization resolveOrganization(Gender gender) {
+        return gender.equals(Gender.MAN) ? Organization.ATP : Organization.WTA;
     }
 
-    private int promptUserForRating(String organization) {
-        if (organization.equalsIgnoreCase(Organization.ATP.toString())) {
-            System.out.print("Enter a ATP rating: ");
-        } else {
-            System.out.print("Enter a WTA rating: ");
-        }
+    private Gender resolveGender(String gender) {
+        return gender.equalsIgnoreCase(Gender.MAN.toString()) ? Gender.MAN : Gender.WOMAN;
+    }
+
+    private int promptUserForRating(Organization organization) {
+        System.out.print("Enter a " + organization.toString() + " rating: ");
         return scanner.nextInt();
     }
 
@@ -112,44 +109,10 @@ public class Menu {
         return scanner.nextLine();
     }
 
-    private void openMatchMenu() {
-        boolean quit = false;
-        System.out.println("Opening match menu.......");
-        printMatchOptions();
-        while (!quit) {
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-            switch (choice) {
-                case 0:
-                    printMatchOptions();
-                    break;
-                case 1:
-                    simulateMatch();
-                    break;
-                case 2:
-                    quit = true;
-                    System.out.println("Going back to tennis simulator menu.......");
-                    printMenu();
-                    break;
-                default:
-                    System.out.println("Incorrect input. Please choose one of available options.\n");
-                    printMatchOptions();
-                    break;
-            }
-        }
-    }
-
-    private void printMatchOptions() {
-        System.out.println("Select:\n" +
-                "0 - show match options;\n" +
-                "1 - start simulation;\n" +
-                "2 - exit match menu;");
-    }
-
-    private boolean addedPlayersToMatchSimulator() {
+    private void selectPlayersForMatchSimulation() {
         if (playersDatabase.getPlayers().isEmpty()) {
             System.out.println("Players database is empty.");
-            return false;
+            return;
         }
 
         System.out.println("Available players: ");
@@ -159,7 +122,7 @@ public class Menu {
         String firstPlayerName = scanner.nextLine();
         if (!isValidPlayer(firstPlayerName)) {
             System.out.println("Can`t find player in database. Please enter valid name.");
-            return false;
+            return;
         }
         Player firstPlayer = resolvePlayer(firstPlayerName);
 
@@ -167,12 +130,13 @@ public class Menu {
         String secondPlayerName = scanner.nextLine();
         if (!isValidPlayer(secondPlayerName)) {
             System.out.println("Can`t find player in database. Please enter valid name.");
-            return false;
+            return;
         }
         Player secondPlayer = resolvePlayer(secondPlayerName);
 
         matchSimulator = new MatchSimulator(firstPlayer, secondPlayer);
-        return true;
+        System.out.println("\n" + firstPlayer.getName() + " is playing against "
+                + secondPlayer.getName() + "\n");
     }
 
     private boolean isValidPlayer(String name) {
@@ -184,29 +148,13 @@ public class Menu {
     }
 
     private void simulateMatch() {
-        if (!addedPlayersToMatchSimulator()) {
+        selectPlayersForMatchSimulation();
+        if (matchSimulator == null) {
+            printMenu();
             return;
         }
 
-        Player firstPlayer = matchSimulator.getFirstPlayer();
-        Player secondPlayer = matchSimulator.getSecondPlayer();
-
-        System.out.println("\n" + firstPlayer.getName() + " is playing against "
-                + secondPlayer.getName() + "\n");
-
         matchSimulator.setFirstServer();
-        boolean isWinner = false;
-        while (!isWinner) {
-            showMatchResult(firstPlayer, secondPlayer);
-            isWinner = true;
-        }
-    }
-
-    private void showMatchResult(Player firstPlayer, Player secondPlayer) {
-        System.out.println("\t\t  GAME \t SET \tMATCH");
-        System.out.println(firstPlayer.getAbbreviatedName() + "  " + 15 + "\t   "
-                + firstPlayer.getGamesWon() + "\t  " + firstPlayer.getSetsWon());
-        System.out.println(secondPlayer.getAbbreviatedName() + "  " + 40 + "\t   "
-                + secondPlayer.getGamesWon() + "\t  " + secondPlayer.getSetsWon());
+        matchSimulator.showResult();
     }
 }

@@ -6,10 +6,22 @@ import java.util.List;
 
 public class PlayersDatabase {
 
-    private List<Player> players;
+    private static PlayersDatabase instance;
+    private final List<Player> players;
 
-    public PlayersDatabase() {
+    private PlayersDatabase() {
         players = new ArrayList<>();
+    }
+
+    public static PlayersDatabase getInstance() {
+        if (instance == null) {
+            instance = new PlayersDatabase();
+        }
+        return instance;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 
     public void addPlayer(Player player) {
@@ -35,15 +47,11 @@ public class PlayersDatabase {
     }
 
     public Player findPlayer(String name) {
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getName().equals(name)) {
-                return players.get(i);
+        for (Player player : players) {
+            if (player.getName().equals(name)) {
+                return player;
             }
         }
         return null;
-    }
-
-    public List<Player> getPlayers() {
-        return players;
     }
 }

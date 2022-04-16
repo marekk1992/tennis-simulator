@@ -2,8 +2,8 @@ package tennisSimulator;
 
 public class MatchSimulator {
 
-    private Player firstPlayer;
-    private Player secondPlayer;
+    private final Player firstPlayer;
+    private final Player secondPlayer;
 
     public MatchSimulator(Player firstPlayer, Player secondPlayer) {
         this.firstPlayer = firstPlayer;
@@ -19,20 +19,20 @@ public class MatchSimulator {
     }
 
     public void changeServer() {
-        if (!firstPlayer.isServing()) {
-            firstPlayer.setServing(true);
-            secondPlayer.setServing(false);
-        } else {
+        if (firstPlayer.isServing()) {
             firstPlayer.setServing(false);
             secondPlayer.setServing(true);
+        } else {
+            firstPlayer.setServing(true);
+            secondPlayer.setServing(false);
         }
     }
 
-    public Player getFirstPlayer() {
-        return firstPlayer;
-    }
-
-    public Player getSecondPlayer() {
-        return secondPlayer;
+    public void showResult() {
+        System.out.println("\t\t  GAME \t SET \tMATCH");
+        System.out.println(firstPlayer.getAbbreviatedName() + "  " + firstPlayer.getHandsWon() + "\t   "
+                + firstPlayer.getGamesWon() + "\t  " + firstPlayer.getSetsWon());
+        System.out.println(secondPlayer.getAbbreviatedName() + "  " + secondPlayer.getHandsWon() + "\t   "
+                + secondPlayer.getGamesWon() + "\t  " + secondPlayer.getSetsWon());
     }
 }
