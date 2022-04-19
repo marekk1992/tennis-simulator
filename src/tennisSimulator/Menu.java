@@ -4,9 +4,13 @@ import java.util.Scanner;
 
 public class Menu {
 
-    private final PlayersDatabase playersDatabase = PlayersDatabase.getInstance();
+    private final PlayersDatabase playersDatabase;
     private static final Scanner scanner = new Scanner(System.in);
     private MatchSimulator matchSimulator;
+
+    public Menu() {
+        playersDatabase = PlayersDatabase.getInstance();
+    }
 
     public void openTennisSimulatorMenu() {
         boolean quit = false;
@@ -110,37 +114,33 @@ public class Menu {
     }
 
     private void selectPlayersForMatchSimulation() {
-        if (playersDatabase.getPlayers().isEmpty()) {
-            System.out.println("Players database is empty.");
-            return;
-        }
-
-        System.out.println("Available players: ");
         playersDatabase.print();
-
-        System.out.print("Enter a first player name: ");
-        String firstPlayerName = scanner.nextLine();
-        if (!isValidPlayer(firstPlayerName)) {
-            System.out.println("Can`t find player in database. Please enter valid name.");
+        if (playersDatabase.getPlayers().isEmpty()) {
             return;
         }
-        Player firstPlayer = resolvePlayer(firstPlayerName);
 
-        System.out.print("Enter a second player name: ");
-        String secondPlayerName = scanner.nextLine();
-        if (!isValidPlayer(secondPlayerName)) {
-            System.out.println("Can`t find player in database. Please enter valid name.");
+        Player firstPlayer = resolvePlayer(promptUserForName());
+        if (!isValidPlayer(firstPlayer)) {
             return;
         }
-        Player secondPlayer = resolvePlayer(secondPlayerName);
+
+        Player secondPlayer = resolvePlayer(promptUserForName());
+        if (!isValidPlayer(secondPlayer)) {
+            return;
+        }
 
         matchSimulator = new MatchSimulator(firstPlayer, secondPlayer);
         System.out.println("\n" + firstPlayer.getName() + " is playing against "
                 + secondPlayer.getName() + "\n");
     }
 
-    private boolean isValidPlayer(String name) {
-        return playersDatabase.findPlayer(name) != null;
+    private boolean isValidPlayer(Player player) {
+        if (player == null) {
+            System.out.println("Can`t find player in database. Please enter valid name.");
+            return false;
+        }
+        System.out.println("Selected " + player.getName() + " for a match.");
+        return true;
     }
 
     private Player resolvePlayer(String name) {

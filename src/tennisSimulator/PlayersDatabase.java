@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PlayersDatabase {
 
-    private static PlayersDatabase instance;
+    private static final PlayersDatabase instance = new PlayersDatabase();
     private final List<Player> players;
 
     private PlayersDatabase() {
@@ -14,9 +14,6 @@ public class PlayersDatabase {
     }
 
     public static PlayersDatabase getInstance() {
-        if (instance == null) {
-            instance = new PlayersDatabase();
-        }
         return instance;
     }
 
