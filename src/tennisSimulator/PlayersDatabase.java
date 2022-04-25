@@ -6,10 +6,19 @@ import java.util.List;
 
 public class PlayersDatabase {
 
-    private List<Player> players;
+    private static final PlayersDatabase instance = new PlayersDatabase();
+    private final List<Player> players;
 
-    public PlayersDatabase() {
+    private PlayersDatabase() {
         players = new ArrayList<>();
+    }
+
+    public static PlayersDatabase getInstance() {
+        return instance;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 
     public void addPlayer(Player player) {
@@ -32,5 +41,14 @@ public class PlayersDatabase {
                 System.out.println(player);
             }
         }
+    }
+
+    public Player findPlayer(String name) {
+        for (Player player : players) {
+            if (player.getName().equals(name)) {
+                return player;
+            }
+        }
+        return null;
     }
 }

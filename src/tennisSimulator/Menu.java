@@ -4,8 +4,13 @@ import java.util.Scanner;
 
 public class Menu {
 
-    private static final PlayersDatabase playersDatabase = new PlayersDatabase();
+    private final PlayersDatabase playersDatabase;
     private static final Scanner scanner = new Scanner(System.in);
+    private MatchSimulator matchSimulator;
+
+    public Menu() {
+        playersDatabase = PlayersDatabase.getInstance();
+    }
 
     public void openTennisSimulatorMenu() {
         boolean quit = false;
@@ -25,8 +30,11 @@ public class Menu {
                     addPlayerToDatabase();
                     break;
                 case 3:
+                    simulateMatch();
+                    break;
+                case 4:
                     quit = true;
-                    System.out.println("Exiting simulator...");
+                    System.out.println("Exiting simulator.....");
                     break;
                 default:
                     System.out.println("Incorrect input. Please choose one of available options.\n");
@@ -41,7 +49,8 @@ public class Menu {
                 "0 - show options;\n" +
                 "1 - show players database;\n" +
                 "2 - add player to database;\n" +
-                "3 - exit simulator;");
+                "3 - simulate match;\n" +
+                "4 - exit simulator;");
     }
 
     private void addPlayerToDatabase() {
@@ -51,13 +60,14 @@ public class Menu {
             return;
         }
 
-        String gender = promptUserForGender();
-        if (!isValidGender(gender)) {
+        String playerGender = promptUserForGender();
+        if (!isValidGender(playerGender)) {
             System.out.println("Addition failed. Please enter a valid gender.");
             return;
         }
+        Gender gender = resolveGender(playerGender);
 
-        String organization = resolveOrganization(gender);
+        Organization organization = resolveOrganization(gender);
         int rating = promptUserForRating(organization);
         if (!isValidRating(rating)) {
             System.out.println("Addition failed. Please enter a valid rating.");
@@ -68,7 +78,8 @@ public class Menu {
     }
 
     private boolean isValidGender(String gender) {
-        return gender.equalsIgnoreCase(Player.MAN) || gender.equalsIgnoreCase(Player.WOMAN);
+        return gender.equalsIgnoreCase(Gender.MAN.toString())
+                || gender.equalsIgnoreCase(Gender.WOMAN.toString());
     }
 
     private boolean isFullName(String name) {
@@ -79,20 +90,16 @@ public class Menu {
         return rating > 0;
     }
 
-    private String resolveOrganization(String gender) {
-        if (gender.equalsIgnoreCase(Player.MAN)) {
-            return Player.MEN_ORGANIZATION;
-        } else {
-            return Player.WOMEN_ORGANIZATION;
-        }
+    private Organization resolveOrganization(Gender gender) {
+        return gender.equals(Gender.MAN) ? Organization.ATP : Organization.WTA;
     }
 
-    private int promptUserForRating(String organization) {
-        if (organization.equalsIgnoreCase(Player.MEN_ORGANIZATION)) {
-            System.out.print("Enter a ATP rating: ");
-        } else {
-            System.out.print("Enter a WTA rating: ");
-        }
+    private Gender resolveGender(String gender) {
+        return gender.equalsIgnoreCase(Gender.MAN.toString()) ? Gender.MAN : Gender.WOMAN;
+    }
+
+    private int promptUserForRating(Organization organization) {
+        System.out.print("Enter a " + organization.toString() + " rating: ");
         return scanner.nextInt();
     }
 
@@ -104,5 +111,50 @@ public class Menu {
     private String promptUserForGender() {
         System.out.print("Enter a gender (man/woman): ");
         return scanner.nextLine();
+    }
+
+    private void selectPlayersForMatchSimulation() {
+        playersDatabase.print();
+        if (playersDatabase.getPlayers().isEmpty()) {
+            return;
+        }
+
+        Player firstPlayer = resolvePlayer(promptUserForName());
+        if (!isValidPlayer(firstPlayer)) {
+            return;
+        }
+
+        Player secondPlayer = resolvePlayer(promptUserForName());
+        if (!isValidPlayer(secondPlayer)) {
+            return;
+        }
+
+        matchSimulator = new MatchSimulator(firstPlayer, secondPlayer);
+        System.out.println("\n" + firstPlayer.getName() + " is playing against "
+                + secondPlayer.getName() + "\n");
+    }
+
+    private boolean isValidPlayer(Player player) {
+        if (player == null) {
+            System.out.println("Can`t find player in database. Please enter valid name.");
+            return false;
+        }
+        System.out.println("Selected " + player.getName() + " for a match.");
+        return true;
+    }
+
+    private Player resolvePlayer(String name) {
+        return playersDatabase.findPlayer(name);
+    }
+
+    private void simulateMatch() {
+        selectPlayersForMatchSimulation();
+        if (matchSimulator == null) {
+            printMenu();
+            return;
+        }
+
+        matchSimulator.setFirstServer();
+        matchSimulator.showResult();
     }
 }
