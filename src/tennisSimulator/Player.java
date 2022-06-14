@@ -9,7 +9,7 @@ public class Player implements Comparable<Player> {
     private boolean isServing = false;
     private int gamesWon = 0;
     private int setsWon = 0;
-    private Object handsWon = 0;
+    private int handsWon = 0;
 
     public Player(String name, Gender gender, int rating) {
         this.name = name;
@@ -38,9 +38,6 @@ public class Player implements Comparable<Player> {
 
     public void setServing(boolean serving) {
         isServing = serving;
-        if (isServing) {
-            System.out.println(name + " is serving");
-        }
     }
 
     @Override
@@ -56,7 +53,23 @@ public class Player implements Comparable<Player> {
         return setsWon;
     }
 
-    public Object getHandsWon() {
+    public int getHandsWon() {
         return handsWon;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setGamesWon(int gamesWon) {
+        this.gamesWon = gamesWon;
+    }
+
+    public void setSetsWon(int setsWon) {
+        this.setsWon = setsWon;
+    }
+
+    public void setHandsWon(int handsWon) {
+        this.handsWon = handsWon;
     }
 }

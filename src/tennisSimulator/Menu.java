@@ -153,8 +153,19 @@ public class Menu {
             printMenu();
             return;
         }
-
         matchSimulator.setFirstServer();
+        while (matchSimulator.noWinner()) {
+            matchSimulator.showResult();
+            matchSimulator.simulateHand();
+            matchSimulator.updateResult();
+            pressKey();
+        }
         matchSimulator.showResult();
+        printMenu();
+    }
+
+    public static void pressKey() {
+        System.out.println("\nPress <ENTER> key to simulate next hand...");
+        scanner.nextLine();
     }
 }
