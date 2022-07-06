@@ -6,22 +6,22 @@ public class Menu {
 
     private final PlayersDatabase playersDatabase;
     private static final Scanner scanner = new Scanner(System.in);
-    private MatchSimulator matchSimulator;
+    private Match match;
 
     public Menu() {
         playersDatabase = PlayersDatabase.getInstance();
     }
 
-    public void openTennisSimulatorMenu() {
+    public void open() {
         boolean quit = false;
         System.out.println("WELCOME TO TENNIS SIMULATOR\n");
-        printMenu();
+        print();
         while (!quit) {
             int choice = scanner.nextInt();
             scanner.nextLine();
             switch (choice) {
                 case 0:
-                    printMenu();
+                    print();
                     break;
                 case 1:
                     playersDatabase.print();
@@ -38,13 +38,13 @@ public class Menu {
                     break;
                 default:
                     System.out.println("Incorrect input. Please choose one of available options.\n");
-                    printMenu();
+                    print();
                     break;
             }
         }
     }
 
-    private void printMenu() {
+    private void print() {
         System.out.println("Select:\n" +
                 "0 - show options;\n" +
                 "1 - show players database;\n" +
@@ -129,7 +129,7 @@ public class Menu {
             return;
         }
 
-        matchSimulator = new MatchSimulator(firstPlayer, secondPlayer);
+        match = new Match(firstPlayer, secondPlayer);
         System.out.println("\n" + firstPlayer.getName() + " is playing against "
                 + secondPlayer.getName() + "\n");
     }
@@ -149,23 +149,12 @@ public class Menu {
 
     private void simulateMatch() {
         selectPlayersForMatchSimulation();
-        if (matchSimulator == null) {
-            printMenu();
+        if (match == null) {
+            print();
             return;
         }
-        matchSimulator.setFirstServer();
-        while (matchSimulator.noWinner()) {
-            matchSimulator.showResult();
-            matchSimulator.simulateHand();
-            matchSimulator.updateResult();
-            pressKey();
-        }
-        matchSimulator.showResult();
-        printMenu();
-    }
-
-    public static void pressKey() {
-        System.out.println("\nPress <ENTER> key to simulate next hand...");
-        scanner.nextLine();
+        match.simulate();
+        print();
+        match = null;
     }
 }

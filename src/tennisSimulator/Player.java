@@ -4,19 +4,17 @@ public class Player implements Comparable<Player> {
 
     private final String name;
     private final String abbreviatedName;
-    private final int rating;
     private final Organization organization;
-    private boolean isServing = false;
-    private int gamesWon = 0;
-    private int setsWon = 0;
-    private int handsWon = 0;
+    private final MatchStats matchStats;
+    private final Attributes attributes;
 
     public Player(String name, Gender gender, int rating) {
         this.name = name;
-        this.rating = rating;
         String[] splitName = name.split(" ");
         abbreviatedName = splitName[1].substring(0, 3).toUpperCase();
         organization = gender.equals(Gender.MAN) ? Organization.ATP : Organization.WTA;
+        matchStats = new MatchStats();
+        attributes = new Attributes(rating);
     }
 
     public String getName() {
@@ -25,51 +23,23 @@ public class Player implements Comparable<Player> {
 
     @Override
     public int compareTo(Player player) {
-        return Integer.compare(rating, player.rating);
+        return Integer.compare(attributes.getRating(), player.getAttributes().getRating());
     }
 
     public String getAbbreviatedName() {
         return abbreviatedName;
     }
 
-    public boolean isServing() {
-        return isServing;
-    }
-
-    public void setServing(boolean serving) {
-        isServing = serving;
-    }
-
     @Override
     public String toString() {
-        return name + " (" + organization + " rating - " + rating + ")";
+        return name + " (" + organization + " rating - " + getAttributes().getRating() + ")";
     }
 
-    public int getGamesWon() {
-        return gamesWon;
+    public MatchStats getMatchStats() {
+        return matchStats;
     }
 
-    public int getSetsWon() {
-        return setsWon;
-    }
-
-    public int getHandsWon() {
-        return handsWon;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setGamesWon(int gamesWon) {
-        this.gamesWon = gamesWon;
-    }
-
-    public void setSetsWon(int setsWon) {
-        this.setsWon = setsWon;
-    }
-
-    public void setHandsWon(int handsWon) {
-        this.handsWon = handsWon;
+    public Attributes getAttributes() {
+        return attributes;
     }
 }
