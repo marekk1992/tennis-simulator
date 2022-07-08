@@ -20,33 +20,22 @@ public class Match {
         serve.defineFirstServer();
         while (hasNoWinner()) {
             if (hasTieBreak()) {
-                TieBreak tieBreak = new TieBreak(configuration.getPointsToWinMatchTieBreak(), firstPlayer, secondPlayer);
-                result.initializeTieBreak(tieBreak);
-                while (tieBreak.hasNoWinner()) {
-                    simulateServe();
-                }
-                result.resetTieBreak();
+                simulateTieBreak(configuration.getPointsToWinSetTieBreak());
             } else if (set.hasTieBreak()) {
-                TieBreak tieBreak = new TieBreak(configuration.getPointsToWinSetTieBreak(), firstPlayer, secondPlayer);
-                result.initializeTieBreak(tieBreak);
-                while (tieBreak.hasNoWinner()) {
-                    simulateServe();
-                }
-                result.resetTieBreak();
+                simulateTieBreak(configuration.getPointsToWinMatchTieBreak());
             } else {
                 simulateServe();
             }
         }
         result.showFinalScore();
-        firstPlayer.getMatchStats().setDefaultValues();
-        secondPlayer.getMatchStats().setDefaultValues();
+        resetMatchStats();
         set.clearMatchResult();
     }
 
     private void initialize() {
         serve = new Serve(firstPlayer, secondPlayer);
         configuration = new Configuration(2, 1, 7, 10);
-        set = new Set(firstPlayer, secondPlayer, configuration.getGamesInSet());
+        set = new Set(firstPlayer, secondPlayer, configuration.getGames());
         result = new Result(firstPlayer, secondPlayer, set, new Game(firstPlayer, secondPlayer), serve);
     }
 
@@ -58,8 +47,8 @@ public class Match {
     private boolean hasTieBreak() {
         return firstPlayer.getMatchStats().getSetsWon() == (configuration.getSetsToWinMatch() - 1)
                 && secondPlayer.getMatchStats().getSetsWon() == (configuration.getSetsToWinMatch() - 1)
-                && firstPlayer.getMatchStats().getGamesWon() == configuration.getGamesInSet()
-                && secondPlayer.getMatchStats().getGamesWon() == configuration.getGamesInSet();
+                && firstPlayer.getMatchStats().getGamesWon() == configuration.getGames()
+                && secondPlayer.getMatchStats().getGamesWon() == configuration.getGames();
     }
 
     private void simulateServe() {
@@ -67,5 +56,19 @@ public class Match {
         result.applySimulationResult(serve.simulate());
         result.update();
         Button.pressKey();
+    }
+
+    private void simulateTieBreak(int points) {
+        TieBreak tieBreak = new TieBreak(points, firstPlayer, secondPlayer);
+        result.initializeTieBreak(tieBreak);
+        while (tieBreak.hasNoWinner()) {
+            simulateServe();
+        }
+        result.resetTieBreak();
+    }
+
+    private void resetMatchStats() {
+        firstPlayer.getMatchStats().setDefaultValues();
+        secondPlayer.getMatchStats().setDefaultValues();
     }
 }

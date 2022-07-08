@@ -111,11 +111,11 @@ public class Result {
         game.resetStatus();
         set.updateResult(player1);
         serve.changeServer();
-        if (player1.equals(set.playerWhichWonSet())) {
+        if (player1.equals(set.getPlayerWhichWonSet())) {
             incrementNumberOfWonSets(player1);
             set.saveResult(player1.getMatchStats().getGamesWon(), player2.getMatchStats().getGamesWon());
             set.resetResult();
-        } else if (player2.equals(set.playerWhichWonSet())) {
+        } else if (player2.equals(set.getPlayerWhichWonSet())) {
             incrementNumberOfWonSets(player2);
             set.saveResult(player2.getMatchStats().getGamesWon(), player1.getMatchStats().getGamesWon());
             set.resetResult();

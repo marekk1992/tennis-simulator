@@ -4,13 +4,13 @@ public class Serve {
 
     private final Player firstPlayer;
     private final Player secondPlayer;
-    private final Double SERVING_FACTOR = 0.2;
-    private final Integer RATING_DIFFERENCE;
+    private static final double SERVING_FACTOR = 0.2;
+    private final int ratingDifference;
 
     public Serve(Player firstPlayer, Player secondPlayer) {
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
-        RATING_DIFFERENCE = firstPlayer.getAttributes().getRating() - secondPlayer.getAttributes().getRating();
+        ratingDifference = firstPlayer.getAttributes().getRating() - secondPlayer.getAttributes().getRating();
     }
 
     public void defineFirstServer() {
@@ -34,9 +34,9 @@ public class Serve {
     public Player simulate() {
         double servingFactor = SERVING_FACTOR;
         if (firstPlayer.getMatchStats().isServing()) {
-            servingFactor = -servingFactor;
+            servingFactor = -SERVING_FACTOR;
         }
-        double probability = 1 / (1 + Math.pow(10, ((RATING_DIFFERENCE / 150.0) * 0.8 + servingFactor)));
+        double probability = 1 / (1 + Math.pow(10, ((ratingDifference / 150.0) * 0.8 + servingFactor)));
         if (Math.random() < probability) {
             return firstPlayer;
         } else {
