@@ -1,4 +1,4 @@
-package tennisSimulator;
+package tennisSimulator.player;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,15 +37,16 @@ public class PlayersDatabase {
             System.out.println("Players database is empty.");
         } else {
             Collections.sort(players);
+            System.out.println("PlayerID | Name | Organization-Rating");
             for (Player player : players) {
                 System.out.println(player);
             }
         }
     }
 
-    public Player findPlayer(String name) {
+    public Player findPlayer(int id) {
         for (Player player : players) {
-            if (player.getName().equals(name)) {
+            if (player.getId().equals(id)) {
                 return player;
             }
         }

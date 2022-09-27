@@ -1,4 +1,4 @@
-package tennisSimulator;
+package tennisSimulator.match;
 
 public enum Point {
 

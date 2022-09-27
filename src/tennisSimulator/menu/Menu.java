@@ -1,4 +1,10 @@
-package tennisSimulator;
+package tennisSimulator.menu;
+
+import tennisSimulator.match.Match;
+import tennisSimulator.player.Gender;
+import tennisSimulator.player.Organization;
+import tennisSimulator.player.Player;
+import tennisSimulator.player.PlayersDatabase;
 
 import java.util.Scanner;
 
@@ -113,18 +119,23 @@ public class Menu {
         return scanner.nextLine();
     }
 
+    private String promptUserForId() {
+        System.out.println("\nChoose player ID: ");
+        return scanner.nextLine();
+    }
+
     private void selectPlayersForMatchSimulation() {
         playersDatabase.print();
         if (playersDatabase.getPlayers().isEmpty()) {
             return;
         }
 
-        Player firstPlayer = resolvePlayer(promptUserForName());
+        Player firstPlayer = resolvePlayer(Integer.parseInt(promptUserForId()));
         if (!isValidPlayer(firstPlayer)) {
             return;
         }
 
-        Player secondPlayer = resolvePlayer(promptUserForName());
+        Player secondPlayer = resolvePlayer(Integer.parseInt(promptUserForId()));
         if (!isValidPlayer(secondPlayer)) {
             return;
         }
@@ -136,15 +147,15 @@ public class Menu {
 
     private boolean isValidPlayer(Player player) {
         if (player == null) {
-            System.out.println("Can`t find player in database. Please enter valid name.");
+            System.out.println("Can`t find player in database. Please choose a valid player ID from the list.");
             return false;
         }
         System.out.println("Selected " + player.getName() + " for a match.");
         return true;
     }
 
-    private Player resolvePlayer(String name) {
-        return playersDatabase.findPlayer(name);
+    private Player resolvePlayer(int id) {
+        return playersDatabase.findPlayer(id);
     }
 
     private void simulateMatch() {
