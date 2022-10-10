@@ -1,23 +1,20 @@
-package tennisSimulator.player;
+package tennissimulator.player;
+
+import tennissimulator.utils.IdGenerator;
 
 public class Player implements Comparable<Player> {
 
     private final String name;
-    private final String abbreviatedName;
     private final Organization organization;
     private boolean serving;
     private final Attributes attributes;
     private final Integer id;
-    private static int counter = 0;
 
     public Player(String name, Gender gender, int rating) {
         this.name = name;
-        String[] splitName = name.split(" ");
-        abbreviatedName = splitName[1].substring(0, 3).toUpperCase();
         organization = gender.equals(Gender.MAN) ? Organization.ATP : Organization.WTA;
         attributes = new Attributes(rating);
-        counter++;
-        id = counter;
+        id = ++IdGenerator.playersCounter;
     }
 
     public String getName() {
@@ -30,12 +27,14 @@ public class Player implements Comparable<Player> {
     }
 
     public String getAbbreviatedName() {
-        return abbreviatedName;
+        String[] splitName = name.split(" ");
+
+        return splitName[1].substring(0, 3).toUpperCase();
     }
 
     @Override
     public String toString() {
-        return id + " | " + name + " | " + organization + " rating - " + getAttributes().getRating();
+        return id + " | " + name + " | " + organization + "-" + getAttributes().getRating();
     }
 
     public Attributes getAttributes() {
@@ -50,6 +49,10 @@ public class Player implements Comparable<Player> {
         return serving;
     }
 
+    public void changeServer() {
+        serving = !serving;
+    }
+
     public void setServing(boolean serving) {
         this.serving = serving;
     }
@@ -61,4 +64,5 @@ public class Player implements Comparable<Player> {
     public Integer getId() {
         return id;
     }
+
 }

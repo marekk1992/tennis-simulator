@@ -1,7 +1,7 @@
-package tennisSimulator.match;
+package tennissimulator.match;
 
-import tennisSimulator.menu.Button;
-import tennisSimulator.player.Player;
+import tennissimulator.menu.Button;
+import tennissimulator.player.Player;
 
 public class Game {
 
@@ -27,26 +27,35 @@ public class Game {
         }
         Player winner = getWinner();
         resetStatus();
+
         return winner;
     }
 
     private void updateStatus(Player serveWinner) {
         if (serveWinner.equals(firstPlayer)) {
-            if (serveLoserHasAdvantage(secondPlayerGameStatus)) {
-                secondPlayerGameStatus = Point.FORTY;
-            } else {
-                firstPlayerGameStatus = getNextPoint(firstPlayerGameStatus, secondPlayerGameStatus);
-            }
+            updateStatusWhenFirstPlayerWon();
         } else {
-            if (serveLoserHasAdvantage(firstPlayerGameStatus)) {
-                firstPlayerGameStatus = Point.FORTY;
-            } else {
-                secondPlayerGameStatus = getNextPoint(secondPlayerGameStatus, firstPlayerGameStatus);
-            }
+            updateStatusWhenSecondPlayerWon();
         }
     }
 
-    public void resetStatus() {
+    private void updateStatusWhenFirstPlayerWon() {
+        if (serveLoserHasAdvantage(secondPlayerGameStatus)) {
+            secondPlayerGameStatus = Point.FORTY;
+        } else {
+            firstPlayerGameStatus = getNextPoint(firstPlayerGameStatus, secondPlayerGameStatus);
+        }
+    }
+
+    private void updateStatusWhenSecondPlayerWon() {
+        if (serveLoserHasAdvantage(firstPlayerGameStatus)) {
+            firstPlayerGameStatus = Point.FORTY;
+        } else {
+            secondPlayerGameStatus = getNextPoint(secondPlayerGameStatus, firstPlayerGameStatus);
+        }
+    }
+
+    private void resetStatus() {
         firstPlayerGameStatus = Point.LOVE;
         secondPlayerGameStatus = Point.LOVE;
         scoreTable.updateWithServe(firstPlayerGameStatus.toString(), secondPlayerGameStatus.toString());
@@ -102,4 +111,5 @@ public class Game {
     private Player getWinner() {
         return firstPlayerWonGame() ? firstPlayer : secondPlayer;
     }
+
 }

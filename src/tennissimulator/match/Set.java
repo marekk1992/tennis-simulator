@@ -1,7 +1,8 @@
-package tennisSimulator.match;
+package tennissimulator.match;
 
-import tennisSimulator.config.Configuration;
-import tennisSimulator.player.Player;
+import tennissimulator.player.Player;
+
+import java.util.Optional;
 
 public class Set {
 
@@ -9,7 +10,7 @@ public class Set {
     private final Player secondPlayer;
     private final ScoreTable scoreTable;
     private final Game game;
-    private final int games;
+    public static final int GAMES = 3;
     private Integer firstPlayerGamesWon;
     private Integer secondPlayerGamesWon;
 
@@ -18,32 +19,23 @@ public class Set {
         this.secondPlayer = secondPlayer;
         this.scoreTable = scoreTable;
         game = new Game(firstPlayer, secondPlayer, scoreTable);
-        this.games = Configuration.games;
         firstPlayerGamesWon = 0;
         secondPlayerGamesWon = 0;
     }
 
-    public void simulate() {
+    public Optional<Player> simulate() {
         while (hasNoWinner()) {
-            Player gameWinner = game.simulate();
-            if (gameWinner.equals(firstPlayer)) {
-                updateResult(firstPlayer);
-            } else {
-                updateResult(secondPlayer);
-            }
-            scoreTable.updateWithGame(firstPlayerGamesWon.toString(), secondPlayerGamesWon.toString());
+            updateResult(game.simulate());
+            scoreTable.updateWithGame(firstPlayerGamesWon, secondPlayerGamesWon);
             changeServer();
         }
+
+        return getWinner();
     }
 
     private void changeServer() {
-        if (firstPlayer.isServing()) {
-            firstPlayer.setServing(false);
-            secondPlayer.setServing(true);
-        } else {
-            firstPlayer.setServing(true);
-            secondPlayer.setServing(false);
-        }
+        firstPlayer.changeServer();
+        secondPlayer.changeServer();
     }
 
     public void resetScore() {
@@ -52,16 +44,16 @@ public class Set {
     }
 
     private boolean firstPlayerHasWonSet() {
-        return (firstPlayerGamesWon >= games && firstPlayerGamesWon - secondPlayerGamesWon > 1)
-                || firstPlayerGamesWon == (games + 1);
+        return (firstPlayerGamesWon >= GAMES && firstPlayerGamesWon - secondPlayerGamesWon > 1)
+                || firstPlayerGamesWon == (GAMES + 1);
     }
 
     private boolean secondPlayerHasWonSet() {
-        return (secondPlayerGamesWon >= games && secondPlayerGamesWon - firstPlayerGamesWon > 1)
-                || secondPlayerGamesWon == (games + 1);
+        return (secondPlayerGamesWon >= GAMES && secondPlayerGamesWon - firstPlayerGamesWon > 1)
+                || secondPlayerGamesWon == (GAMES + 1);
     }
 
-    public void updateResult(Player player) {
+    private void updateResult(Player player) {
         if (player.equals(firstPlayer)) {
             firstPlayerGamesWon++;
         } else {
@@ -74,7 +66,7 @@ public class Set {
     }
 
     public boolean hasTieBreak() {
-        return firstPlayerGamesWon == games && secondPlayerGamesWon == games;
+        return firstPlayerGamesWon == GAMES && secondPlayerGamesWon == GAMES;
     }
 
     private boolean hasNoWinner() {
@@ -82,17 +74,23 @@ public class Set {
     }
 
     public Player simulateTieBreak(int pointsToWinTieBreak) {
+        scoreTable.initializeTieBreak();
         Player serverAfterTieBreak = getServerOfFirstGameAfterTieBreak();
-        TieBreak tieBreak = new TieBreak(pointsToWinTieBreak, firstPlayer, secondPlayer, scoreTable);
+        Tiebreak tieBreak = new Tiebreak(pointsToWinTieBreak, firstPlayer, secondPlayer, scoreTable);
         Player tieBreakWinner = tieBreak.simulate();
         updateResult(tieBreakWinner);
-        scoreTable.updateWithGame(firstPlayerGamesWon.toString(), secondPlayerGamesWon.toString());
+        scoreTable.updateWithGame(firstPlayerGamesWon, secondPlayerGamesWon);
         setNextServer(serverAfterTieBreak);
+
         return tieBreakWinner;
     }
 
-    public Player getWinner() {
-        return firstPlayerHasWonSet() ? firstPlayer : secondPlayer;
+    public Optional<Player> getWinner() {
+        if (hasWinner()) {
+            return firstPlayerHasWonSet() ? Optional.of(firstPlayer) : Optional.of(secondPlayer);
+        }
+
+        return Optional.empty();
     }
 
     private Player getServerOfFirstGameAfterTieBreak() {
@@ -108,4 +106,5 @@ public class Set {
             firstPlayer.setServing(false);
         }
     }
+
 }

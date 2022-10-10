@@ -1,9 +1,9 @@
-package tennisSimulator.match;
+package tennissimulator.match;
 
-import tennisSimulator.menu.Button;
-import tennisSimulator.player.Player;
+import tennissimulator.menu.Button;
+import tennissimulator.player.Player;
 
-public class TieBreak {
+public class Tiebreak {
 
     private final int pointsToWinTieBreak;
     private int servesPlayed;
@@ -14,7 +14,7 @@ public class TieBreak {
     private Integer firstPlayerTieBreakPointsWon;
     private Integer secondPlayerTieBreakPointsWon;
 
-    public TieBreak(int pointsToWinTieBreak, Player firstPlayer, Player secondPlayer, ScoreTable scoreTable) {
+    public Tiebreak(int pointsToWinTieBreak, Player firstPlayer, Player secondPlayer, ScoreTable scoreTable) {
         this.pointsToWinTieBreak = pointsToWinTieBreak;
         servesPlayed = 0;
         this.firstPlayer = firstPlayer;
@@ -36,21 +36,18 @@ public class TieBreak {
                 changeServer();
             }
         }
+
         Player tieBreakWinner = getWinner();
         resetScore();
         scoreTable.clearTieBreak();
         scoreTable.updateWithServe(firstPlayerTieBreakPointsWon.toString(), secondPlayerTieBreakPointsWon.toString());
+
         return tieBreakWinner;
     }
 
     private void changeServer() {
-        if (firstPlayer.isServing()) {
-            firstPlayer.setServing(false);
-            secondPlayer.setServing(true);
-        } else {
-            firstPlayer.setServing(true);
-            secondPlayer.setServing(false);
-        }
+        firstPlayer.changeServer();
+        secondPlayer.changeServer();
     }
 
     public boolean hasNoWinner() {
@@ -73,6 +70,7 @@ public class TieBreak {
         } else {
             secondPlayerTieBreakPointsWon++;
         }
+
         servesPlayed++;
     }
 
@@ -85,4 +83,5 @@ public class TieBreak {
         firstPlayerTieBreakPointsWon = 0;
         secondPlayerTieBreakPointsWon = 0;
     }
+
 }

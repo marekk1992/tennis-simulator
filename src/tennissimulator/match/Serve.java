@@ -1,6 +1,6 @@
-package tennisSimulator.match;
+package tennissimulator.match;
 
-import tennisSimulator.player.Player;
+import tennissimulator.player.Player;
 
 public class Serve {
 
@@ -21,6 +21,8 @@ public class Serve {
             servingFactor = -SERVING_FACTOR;
         }
         double probability = 1 / (1 + Math.pow(10, ((ratingDifference / 150.0) * 0.8 + servingFactor)));
+
         return Math.random() < probability ? firstPlayer : secondPlayer;
     }
+
 }

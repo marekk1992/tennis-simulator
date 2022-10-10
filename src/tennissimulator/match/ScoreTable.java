@@ -1,7 +1,6 @@
-package tennisSimulator.match;
+package tennissimulator.match;
 
-import tennisSimulator.config.Configuration;
-import tennisSimulator.player.Player;
+import tennissimulator.player.Player;
 
 public class ScoreTable {
 
@@ -14,10 +13,11 @@ public class ScoreTable {
     private String matchPhase = " ";
     private String firstPlayerScoreDisplay;
     private String secondPlayerScoreDisplay;
-    private String firstPlayerGamesWon;
-    private String secondPlayerGamesWon;
+    private int firstPlayerGamesWon;
+    private int secondPlayerGamesWon;
     private int firstPlayerSetsWon;
     private int secondPlayerSetsWon;
+    public static final int SETS = 3;
 
     public ScoreTable(Player firstPlayer, Player secondPlayer) {
         this.firstPlayer = firstPlayer;
@@ -31,8 +31,8 @@ public class ScoreTable {
         secondPlayerPoints = "";
         firstPlayerScoreDisplay = "";
         secondPlayerScoreDisplay = "";
-        firstPlayerGamesWon = "";
-        secondPlayerGamesWon = "";
+        firstPlayerGamesWon = 0;
+        secondPlayerGamesWon = 0;
         firstPlayerSetsWon = 0;
         secondPlayerSetsWon = 0;
     }
@@ -66,8 +66,8 @@ public class ScoreTable {
         System.out.println("MATCH IS FINISHED. MATCH RESULT: ");
         System.out.println(firstPlayer.getName() + "   [" + firstPlayerSetsWon + " - "
                 + secondPlayerSetsWon + "]   " + secondPlayer.getName());
-        System.out.println(" " + firstPlayer.getOrganization() + ": " + firstPlayer.getRating() + "\t\t\t\t   "
-                + secondPlayer.getOrganization() + ": " + secondPlayer.getRating() + "\n");
+        System.out.println(" " + firstPlayer.getOrganization() + ": " + firstPlayer.getRating() +
+                "\t\t\t\t   " + secondPlayer.getOrganization() + ": " + secondPlayer.getRating() + "\n");
         System.out.println("\t   S" + getPossibleNumberOfSets());
         System.out.println(firstPlayer.getAbbreviatedName() + "\t   " + firstPlayerSetsWon + "    "
                 + firstPlayerScoreDisplay);
@@ -80,7 +80,7 @@ public class ScoreTable {
         this.secondPlayerPoints = secondPlayerPoints;
     }
 
-    public void updateWithGame(String firstPlayerGamesWon, String secondPlayerGamesWon) {
+    public void updateWithGame(int firstPlayerGamesWon, int secondPlayerGamesWon) {
         this.firstPlayerGamesWon = firstPlayerGamesWon;
         this.secondPlayerGamesWon = secondPlayerGamesWon;
     }
@@ -90,8 +90,8 @@ public class ScoreTable {
         this.secondPlayerSetsWon = secondPlayerSetsWon;
         firstPlayerScoreDisplay += firstPlayerGamesWon + "    ";
         secondPlayerScoreDisplay += secondPlayerGamesWon + "    ";
-        firstPlayerGamesWon = "0";
-        secondPlayerGamesWon = "0";
+        firstPlayerGamesWon = 0;
+        secondPlayerGamesWon = 0;
     }
 
     public void initializeTieBreak() {
@@ -104,9 +104,11 @@ public class ScoreTable {
 
     private String getPossibleNumberOfSets() {
         StringBuilder setNumbers = new StringBuilder("    ");
-        for (int i = 1; i <= ((Configuration.sets - 1) * 2) + 1; i++) {
+        for (int i = 1; i <= ((SETS - 1) * 2) + 1; i++) {
             setNumbers.append(i).append("    ");
         }
+
         return setNumbers.toString();
     }
+
 }

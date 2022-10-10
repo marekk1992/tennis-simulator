@@ -1,17 +1,18 @@
-package tennisSimulator.match;
+package tennissimulator.match;
 
-import tennisSimulator.config.Configuration;
-import tennisSimulator.player.Player;
+import tennissimulator.player.Player;
+
+import java.util.Optional;
 
 public class Match {
 
     private final Player firstPlayer;
     private final Player secondPlayer;
     private ScoreTable scoreTable;
-    private int sets;
+    public static final int SETS = 3;
     private Set set;
-    private int pointsInSetTieBreak;
-    private int pointsInMatchTieBreak;
+    public static final int POINTS_IN_SET_TIEBREAK = 7;
+    public static final int POINTS_IN_MATCH_TIEBREAK = 10;
     private int firstPlayerSetsWon;
     private int secondPlayerSetsWon;
 
@@ -24,9 +25,6 @@ public class Match {
     private void initialize() {
         scoreTable = new ScoreTable(firstPlayer, secondPlayer);
         set = new Set(firstPlayer, secondPlayer, scoreTable);
-        sets = Configuration.sets;
-        pointsInSetTieBreak = Configuration.pointsInSetTieBreak;
-        pointsInMatchTieBreak = Configuration.pointsInMatchTieBreak;
         firstPlayerSetsWon = 0;
         secondPlayerSetsWon = 0;
     }
@@ -35,15 +33,22 @@ public class Match {
         defineFirstServer();
         while (hasNoWinner()) {
             set.simulate();
-            Player setWinner = resolveSetWinner();
-            if (setWinner != null) {
-                updateScore(setWinner);
-                scoreTable.updateWithSet(firstPlayerSetsWon, secondPlayerSetsWon);
-                set.resetScore();
+            Optional<Player> setWinner = set.simulate();
+            if (setWinner.isPresent()) {
+                updateResult(setWinner.get());
+            } else {
+                updateResult(set.simulateTieBreak(getPointsToWinTieBreak()));
             }
         }
+
         scoreTable.showFinalScore();
         resetScore();
+    }
+
+    private void updateResult(Player player) {
+        updateScore(player);
+        scoreTable.updateWithSet(firstPlayerSetsWon, secondPlayerSetsWon);
+        set.resetScore();
     }
 
     private void defineFirstServer() {
@@ -55,7 +60,7 @@ public class Match {
     }
 
     private boolean hasNoWinner() {
-        return firstPlayerSetsWon != sets && secondPlayerSetsWon != sets;
+        return firstPlayerSetsWon != SETS && secondPlayerSetsWon != SETS;
     }
 
     private void resetScore() {
@@ -71,20 +76,9 @@ public class Match {
         }
     }
 
-    private Player resolveSetWinner() {
-        Player setWinner = null;
-        if (set.hasTieBreak()) {
-            scoreTable.initializeTieBreak();
-            setWinner = set.simulateTieBreak(getPointsToWinTieBreak());
-        } else if (set.hasWinner()) {
-            setWinner = set.getWinner();
-        }
-        return setWinner;
-    }
-
     private int getPointsToWinTieBreak() {
-        return firstPlayerSetsWon == sets - 1 && secondPlayerSetsWon == sets - 1
-                ? pointsInMatchTieBreak : pointsInSetTieBreak;
+        return firstPlayerSetsWon == SETS - 1 && secondPlayerSetsWon == SETS - 1 ?
+                POINTS_IN_MATCH_TIEBREAK : POINTS_IN_SET_TIEBREAK;
     }
-}
 
+}

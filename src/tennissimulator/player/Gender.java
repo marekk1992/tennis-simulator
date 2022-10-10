@@ -1,6 +1,7 @@
-package tennisSimulator.player;
+package tennissimulator.player;
 
 public enum Gender {
 
     MAN, WOMAN
+
 }

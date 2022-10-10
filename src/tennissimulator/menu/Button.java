@@ -1,4 +1,4 @@
-package tennisSimulator.menu;
+package tennissimulator.menu;
 
 import java.util.Scanner;
 
@@ -10,4 +10,5 @@ public class Button {
         System.out.println("\nPress <ENTER> key to simulate next hand...");
         scanner.nextLine();
     }
+
 }
