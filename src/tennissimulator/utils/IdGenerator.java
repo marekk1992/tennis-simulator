@@ -2,10 +2,10 @@ package tennissimulator.utils;
 
 public class IdGenerator {
 
-    public static int playersCounter = 0;
+    private static int id = 0;
 
-    public static int getId() {
-        return ++playersCounter;
+    public static int generateId() {
+        return ++id;
     }
 
 }

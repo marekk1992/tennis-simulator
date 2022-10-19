@@ -1,5 +1,7 @@
 package tennissimulator.player;
 
+import tennissimulator.match.EmptyDatabaseException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,14 +35,14 @@ public class PlayersDatabase {
     }
 
     public void print() {
-        if (players.isEmpty()) {
-            System.out.println("Players database is empty.");
-        } else {
+        try {
             System.out.println("PlayerID | Name | Organization-Rating");
             players
                     .stream()
                     .sorted()
                     .forEach(System.out::println);
+        } catch (EmptyDatabaseException e) {
+            System.out.println(e.getMessage());
         }
     }
 

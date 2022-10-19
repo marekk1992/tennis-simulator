@@ -14,7 +14,7 @@ public class Player implements Comparable<Player> {
         this.name = name;
         organization = gender.equals(Gender.MAN) ? Organization.ATP : Organization.WTA;
         attributes = new Attributes(rating);
-        id = IdGenerator.getId();
+        id = IdGenerator.generateId();
     }
 
     public String getName() {

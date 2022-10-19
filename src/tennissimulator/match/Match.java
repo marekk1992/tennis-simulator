@@ -12,20 +12,20 @@ public class Match {
 
     private final Player firstPlayer;
     private final Player secondPlayer;
-    private ScoreTable scoreTable;
-    private Set set;
+    private final ScoreTable scoreTable;
+    private final Set set;
     private int firstPlayerSetsWon;
     private int secondPlayerSetsWon;
 
     public Match(Player firstPlayer, Player secondPlayer) {
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
+        scoreTable = new ScoreTable(firstPlayer, secondPlayer);
+        set = new Set(firstPlayer, secondPlayer, scoreTable);
         initialize();
     }
 
     private void initialize() {
-        scoreTable = new ScoreTable(firstPlayer, secondPlayer);
-        set = new Set(firstPlayer, secondPlayer, scoreTable);
         firstPlayerSetsWon = 0;
         secondPlayerSetsWon = 0;
     }

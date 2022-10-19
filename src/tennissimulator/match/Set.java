@@ -45,13 +45,17 @@ public class Set {
     }
 
     private boolean firstPlayerHasWonSet() {
-        return (firstPlayerGamesWon >= GAMES_TO_WIN_SET && firstPlayerGamesWon - secondPlayerGamesWon > 1)
+        return (firstPlayerGamesWon >= GAMES_TO_WIN_SET && isMultiplePointsDifference(firstPlayerGamesWon, secondPlayerGamesWon))
                 || firstPlayerGamesWon == (GAMES_TO_WIN_SET + 1);
     }
 
     private boolean secondPlayerHasWonSet() {
-        return (secondPlayerGamesWon >= GAMES_TO_WIN_SET && secondPlayerGamesWon - firstPlayerGamesWon > 1)
+        return (secondPlayerGamesWon >= GAMES_TO_WIN_SET && isMultiplePointsDifference(secondPlayerGamesWon, firstPlayerGamesWon))
                 || secondPlayerGamesWon == (GAMES_TO_WIN_SET + 1);
+    }
+
+    private boolean isMultiplePointsDifference(int firstPlayerGamesWon, int secondPlayerGamesWon) {
+        return firstPlayerGamesWon - secondPlayerGamesWon > 1;
     }
 
     private void updateResult(Player player) {
