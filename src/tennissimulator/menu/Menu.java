@@ -155,10 +155,9 @@ public class Menu {
         try {
             selectPlayersForMatchSimulation();
             match.simulate();
-            print();
-            match = null;
-        } catch (RuntimeException e) {
+        } catch (EmptyDatabaseException | InvalidPlayerIdException e) {
             System.out.println(e.getMessage());
+        } finally {
             print();
         }
     }

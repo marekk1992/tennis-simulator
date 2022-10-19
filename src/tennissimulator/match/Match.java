@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public class Match {
 
-    private static final int SETS_TO_WIN_MATCH = 3;
+    private static final int SETS_TO_WIN_MATCH = 1;
     private static final int POINTS_TO_WIN_SET_TIEBREAK = 7;
     private static final int POINTS_TO_WIN_MATCH_TIEBREAK = 10;
 
