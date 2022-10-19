@@ -1,8 +1,8 @@
-package tennisSimulator;
+package tennissimulator.player;
 
 public class Attributes {
 
-    private int rating;
+    private final int rating;
 
     public Attributes(int rating) {
         this.rating = rating;
@@ -11,4 +11,5 @@ public class Attributes {
     public int getRating() {
         return rating;
     }
+
 }

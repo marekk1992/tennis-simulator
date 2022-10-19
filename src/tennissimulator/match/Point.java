@@ -1,4 +1,4 @@
-package tennisSimulator;
+package tennissimulator.match;
 
 public enum Point {
 
@@ -14,4 +14,5 @@ public enum Point {
     public String toString() {
         return value;
     }
+
 }

@@ -1,8 +1,8 @@
-package tennisSimulator;
+package tennissimulator.player;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class PlayersDatabase {
 
@@ -33,22 +33,19 @@ public class PlayersDatabase {
     }
 
     public void print() {
-        if (players.isEmpty()) {
-            System.out.println("Players database is empty.");
-        } else {
-            Collections.sort(players);
-            for (Player player : players) {
-                System.out.println(player);
-            }
-        }
+
+        System.out.println("PlayerID | Name | Organization-Rating");
+        players
+                .stream()
+                .sorted()
+                .forEach(System.out::println);
     }
 
-    public Player findPlayer(String name) {
-        for (Player player : players) {
-            if (player.getName().equals(name)) {
-                return player;
-            }
-        }
-        return null;
+    public Optional<Player> findPlayer(int id) {
+        return players
+                .stream()
+                .filter(player -> player.getId().equals(id))
+                .findFirst();
     }
+
 }

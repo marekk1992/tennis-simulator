@@ -1,5 +1,14 @@
-package tennisSimulator;
+package tennissimulator.menu;
 
+import tennissimulator.match.EmptyDatabaseException;
+import tennissimulator.match.InvalidPlayerIdException;
+import tennissimulator.match.Match;
+import tennissimulator.player.Gender;
+import tennissimulator.player.Organization;
+import tennissimulator.player.Player;
+import tennissimulator.player.PlayersDatabase;
+
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Menu {
@@ -65,8 +74,8 @@ public class Menu {
             System.out.println("Addition failed. Please enter a valid gender.");
             return;
         }
-        Gender gender = resolveGender(playerGender);
 
+        Gender gender = resolveGender(playerGender);
         Organization organization = resolveOrganization(gender);
         int rating = promptUserForRating(organization);
         if (!isValidRating(rating)) {
@@ -100,61 +109,57 @@ public class Menu {
 
     private int promptUserForRating(Organization organization) {
         System.out.print("Enter a " + organization.toString() + " rating: ");
+
         return scanner.nextInt();
     }
 
     private String promptUserForName() {
         System.out.print("Enter a full player name: ");
+
         return scanner.nextLine();
     }
 
     private String promptUserForGender() {
         System.out.print("Enter a gender (man/woman): ");
+
+        return scanner.nextLine();
+    }
+
+    private String promptUserForId() {
+        System.out.println("\nChoose player ID: ");
+
         return scanner.nextLine();
     }
 
     private void selectPlayersForMatchSimulation() {
-        playersDatabase.print();
         if (playersDatabase.getPlayers().isEmpty()) {
-            return;
+            throw new EmptyDatabaseException("Players database is empty.");
+        }
+        playersDatabase.print();
+
+        Optional<Player> firstPlayer = playersDatabase.findPlayer(Integer.parseInt(promptUserForId()));
+        if (firstPlayer.isEmpty()) {
+            throw new InvalidPlayerIdException("Can`t find player in database according to given player ID.");
+        }
+        Optional<Player> secondPlayer = playersDatabase.findPlayer(Integer.parseInt(promptUserForId()));
+        if (secondPlayer.isEmpty()) {
+            throw new InvalidPlayerIdException("Can`t find player in database according to given player ID.");
         }
 
-        Player firstPlayer = resolvePlayer(promptUserForName());
-        if (!isValidPlayer(firstPlayer)) {
-            return;
-        }
-
-        Player secondPlayer = resolvePlayer(promptUserForName());
-        if (!isValidPlayer(secondPlayer)) {
-            return;
-        }
-
-        match = new Match(firstPlayer, secondPlayer);
-        System.out.println("\n" + firstPlayer.getName() + " is playing against "
-                + secondPlayer.getName() + "\n");
-    }
-
-    private boolean isValidPlayer(Player player) {
-        if (player == null) {
-            System.out.println("Can`t find player in database. Please enter valid name.");
-            return false;
-        }
-        System.out.println("Selected " + player.getName() + " for a match.");
-        return true;
-    }
-
-    private Player resolvePlayer(String name) {
-        return playersDatabase.findPlayer(name);
+        match = new Match(firstPlayer.get(), secondPlayer.get());
+        System.out.println("\n" + firstPlayer.get().getName() + " is playing against "
+                + secondPlayer.get().getName() + "\n");
     }
 
     private void simulateMatch() {
-        selectPlayersForMatchSimulation();
-        if (match == null) {
+        try {
+            selectPlayersForMatchSimulation();
+            match.simulate();
+        } catch (EmptyDatabaseException | InvalidPlayerIdException e) {
+            System.out.println(e.getMessage());
+        } finally {
             print();
-            return;
         }
-        match.simulate();
-        print();
-        match = null;
     }
+
 }

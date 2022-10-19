@@ -1,6 +1,7 @@
-package tennisSimulator;
+package tennissimulator.player;
 
 public enum Organization {
 
     ATP, WTA
+
 }
