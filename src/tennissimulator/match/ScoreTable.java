@@ -4,6 +4,8 @@ import tennissimulator.player.Player;
 
 public class ScoreTable {
 
+    private static final int SETS_TO_WIN_MATCH = 3;
+
     private final Player firstPlayer;
     private final Player secondPlayer;
     private String firstPlayerPoints;
@@ -17,7 +19,6 @@ public class ScoreTable {
     private int secondPlayerGamesWon;
     private int firstPlayerSetsWon;
     private int secondPlayerSetsWon;
-    public static final int SETS = 3;
 
     public ScoreTable(Player firstPlayer, Player secondPlayer) {
         this.firstPlayer = firstPlayer;
@@ -104,7 +105,7 @@ public class ScoreTable {
 
     private String getPossibleNumberOfSets() {
         StringBuilder setNumbers = new StringBuilder("    ");
-        for (int i = 1; i <= ((SETS - 1) * 2) + 1; i++) {
+        for (int i = 1; i <= ((SETS_TO_WIN_MATCH - 1) * 2) + 1; i++) {
             setNumbers.append(i).append("    ");
         }
 

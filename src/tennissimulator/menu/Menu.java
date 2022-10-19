@@ -129,39 +129,33 @@ public class Menu {
         return scanner.nextLine();
     }
 
-    private void selectPlayersForMatchSimulation() {
+    private void selectPlayersForMatchSimulation() throws RuntimeException {
         playersDatabase.print();
         if (playersDatabase.getPlayers().isEmpty()) {
             return;
         }
 
         Optional<Player> firstPlayer = playersDatabase.findPlayer(Integer.parseInt(promptUserForId()));
-        if (firstPlayer.isEmpty()) {
-            System.out.println("Can`t find player in database. Please choose a valid player ID from the list.");
-            return;
-        }
-
         Optional<Player> secondPlayer = playersDatabase.findPlayer(Integer.parseInt(promptUserForId()));
-        if (secondPlayer.isEmpty()) {
-            System.out.println("Can`t find player in database. Please choose a valid player ID from the list.");
-            return;
+        if (firstPlayer.isEmpty() || secondPlayer.isEmpty()) {
+            throw new RuntimeException();
+        } else {
+            match = new Match(firstPlayer.get(), secondPlayer.get());
+            System.out.println("\n" + firstPlayer.get().getName() + " is playing against "
+                    + secondPlayer.get().getName() + "\n");
         }
-
-        match = new Match(firstPlayer.get(), secondPlayer.get());
-        System.out.println("\n" + firstPlayer.get().getName() + " is playing against "
-                + secondPlayer.get().getName() + "\n");
     }
 
     private void simulateMatch() {
-        selectPlayersForMatchSimulation();
-        if (match == null) {
+        try {
+            selectPlayersForMatchSimulation();
+            match.simulate();
             print();
-            return;
+            match = null;
+        } catch (RuntimeException e) {
+            System.out.println("Can`t find player(s) in database. PLease check your input.");
+            print();
         }
-
-        match.simulate();
-        print();
-        match = null;
     }
 
 }

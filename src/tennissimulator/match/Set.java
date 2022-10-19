@@ -6,11 +6,12 @@ import java.util.Optional;
 
 public class Set {
 
+    private static final int GAMES_TO_WIN_SET = 3;
+
     private final Player firstPlayer;
     private final Player secondPlayer;
     private final ScoreTable scoreTable;
     private final Game game;
-    public static final int GAMES = 3;
     private Integer firstPlayerGamesWon;
     private Integer secondPlayerGamesWon;
 
@@ -44,13 +45,13 @@ public class Set {
     }
 
     private boolean firstPlayerHasWonSet() {
-        return (firstPlayerGamesWon >= GAMES && firstPlayerGamesWon - secondPlayerGamesWon > 1)
-                || firstPlayerGamesWon == (GAMES + 1);
+        return (firstPlayerGamesWon >= GAMES_TO_WIN_SET && firstPlayerGamesWon - secondPlayerGamesWon > 1)
+                || firstPlayerGamesWon == (GAMES_TO_WIN_SET + 1);
     }
 
     private boolean secondPlayerHasWonSet() {
-        return (secondPlayerGamesWon >= GAMES && secondPlayerGamesWon - firstPlayerGamesWon > 1)
-                || secondPlayerGamesWon == (GAMES + 1);
+        return (secondPlayerGamesWon >= GAMES_TO_WIN_SET && secondPlayerGamesWon - firstPlayerGamesWon > 1)
+                || secondPlayerGamesWon == (GAMES_TO_WIN_SET + 1);
     }
 
     private void updateResult(Player player) {
@@ -66,7 +67,7 @@ public class Set {
     }
 
     public boolean hasTieBreak() {
-        return firstPlayerGamesWon == GAMES && secondPlayerGamesWon == GAMES;
+        return firstPlayerGamesWon == GAMES_TO_WIN_SET && secondPlayerGamesWon == GAMES_TO_WIN_SET;
     }
 
     private boolean hasNoWinner() {
