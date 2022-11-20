@@ -1,4 +1,4 @@
-package tennissimulator.menu;
+package org.example.tennissimulator.menu;
 
 import java.util.Scanner;
 

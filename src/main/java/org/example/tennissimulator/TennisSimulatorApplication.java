@@ -1,6 +1,6 @@
-package tennissimulator;
+package org.example.tennissimulator;
 
-import tennissimulator.menu.Menu;
+import org.example.tennissimulator.menu.Menu;
 
 public class TennisSimulatorApplication {
 

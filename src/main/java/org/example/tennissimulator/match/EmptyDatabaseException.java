@@ -1,4 +1,4 @@
-package tennissimulator.match;
+package org.example.tennissimulator.match;
 
 public class EmptyDatabaseException extends RuntimeException {
 

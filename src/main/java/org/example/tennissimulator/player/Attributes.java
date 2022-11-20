@@ -1,4 +1,4 @@
-package tennissimulator.player;
+package org.example.tennissimulator.player;
 
 public class Attributes {
 

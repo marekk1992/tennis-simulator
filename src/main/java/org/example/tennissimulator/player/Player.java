@@ -1,6 +1,6 @@
-package tennissimulator.player;
+package org.example.tennissimulator.player;
 
-import tennissimulator.utils.IdGenerator;
+import org.example.tennissimulator.utils.IdGenerator;
 
 public class Player implements Comparable<Player> {
 

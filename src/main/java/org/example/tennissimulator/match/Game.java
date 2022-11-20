@@ -1,7 +1,7 @@
-package tennissimulator.match;
+package org.example.tennissimulator.match;
 
-import tennissimulator.menu.Button;
-import tennissimulator.player.Player;
+import org.example.tennissimulator.menu.Button;
+import org.example.tennissimulator.player.Player;
 
 public class Game {
 
