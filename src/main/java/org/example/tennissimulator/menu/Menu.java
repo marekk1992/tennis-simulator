@@ -1,12 +1,12 @@
-package tennissimulator.menu;
+package org.example.tennissimulator.menu;
 
-import tennissimulator.match.EmptyDatabaseException;
-import tennissimulator.match.InvalidPlayerIdException;
-import tennissimulator.match.Match;
-import tennissimulator.player.Gender;
-import tennissimulator.player.Organization;
-import tennissimulator.player.Player;
-import tennissimulator.player.PlayersDatabase;
+import org.example.tennissimulator.match.EmptyDatabaseException;
+import org.example.tennissimulator.match.InvalidPlayerIdException;
+import org.example.tennissimulator.match.Match;
+import org.example.tennissimulator.player.Gender;
+import org.example.tennissimulator.player.Organization;
+import org.example.tennissimulator.player.Player;
+import org.example.tennissimulator.player.PlayersDatabase;
 
 import java.util.Optional;
 import java.util.Scanner;

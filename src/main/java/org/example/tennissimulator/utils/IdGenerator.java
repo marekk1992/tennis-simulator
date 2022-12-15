@@ -1,4 +1,4 @@
-package tennissimulator.utils;
+package org.example.tennissimulator.utils;
 
 public class IdGenerator {
 

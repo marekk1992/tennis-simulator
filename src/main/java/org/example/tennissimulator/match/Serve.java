@@ -1,6 +1,6 @@
-package tennissimulator.match;
+package org.example.tennissimulator.match;
 
-import tennissimulator.player.Player;
+import org.example.tennissimulator.player.Player;
 
 public class Serve {
 
